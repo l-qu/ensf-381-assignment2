@@ -124,11 +124,94 @@
                 </article>
             </div>
         </section>
+        <section id="cart_section">
+            <h2>Cart</h2>
+            <div id="cart_items">
+                <p>No items in cart.</p>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2026 Sweet Scoop Ice Cream.</p>
     </footer>
+
+    <script>
+        const cartItemsContainer = document.getElementById('cart_items');
+        const addButtons = document.querySelectorAll('.add_btn');
+        const removeButtons = document.querySelectorAll('.remove_btn');
+        let cart = {};
+      
+        function formatPrice(num) {
+            return `$${num.toFixed(2)}`;
+        }
+      
+        function updateCart() {
+            cartItemsContainer.innerHTML = '';
+            const itemNames = Object.keys(cart);
+            if (itemNames.length === 0) {
+                cartItemsContainer.innerHTML = '<p>No items in cart.</p>';
+                return;
+            }
+
+            itemNames.forEach(itemName => {
+                const {quantity, price} = cart[itemName];
+                const lineTotal = quantity * price;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                const nameSpan = document.createElement('span');
+                nameSpan.innerHTML = `<strong>${itemName} (${quantity})</strong>`;
+                const priceSpan = document.createElement('span');
+                priceSpan.className = 'line-total';
+                priceSpan.textContent = formatPrice(lineTotal);
+                itemDiv.appendChild(nameSpan);
+                itemDiv.appendChild(priceSpan);
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+      
+        function extractPrice(priceText) {
+            const priceNumber = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            return isNaN(priceNumber) ? 0 : priceNumber;
+        }
+      
+        addButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const article = button.closest('article');
+                if (!article) {
+                    return;
+                }
+                const itemName = article.querySelector('h3').textContent.trim();
+                const priceElement = article.querySelector('p strong')?.parentElement;
+                if (!priceElement) {
+                    return;
+                }
+                const price = extractPrice(priceElement.textContent);
+                if (cart[itemName]) {
+                    cart[itemName].quantity += 1;
+                } else {
+                    cart[itemName] = { price: price, quantity: 1 };
+                }
+                updateCart();
+            });
+        });
+      
+        removeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+            const article = button.closest('article');
+            if (!article) {
+                return;
+            }
+            const itemName = article.querySelector('h3').textContent.trim();
+            if (cart[itemName]) {
+                delete cart[itemName];
+                updateCart();
+            }
+            });
+        });
+      
+        updateCart();
+      </script>
 </body>
 
 </html>
