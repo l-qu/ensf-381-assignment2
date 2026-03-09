@@ -27,7 +27,7 @@
     </nav>
 
     <main class="customize_order_main">
-        
+        <h2>Order Time Left: <span id = "countdown">10:00</span></h2>
 
         <form action="order_summary.html">
             <div>
@@ -37,31 +37,107 @@
             <h2>Vanilla Dream</h2>
             <h3>Choose Type:</h3>
 
-            <input type="radio" id="type_cup" name="type" value="Cup">
+            <input type="radio" class = "radioInput" id="type_cup" name="type" value="Cup">
             <label for="type_cup">Cup</label><br><br>
-            <input type="radio" id="type_cone" name="type" value="Cone">
+            <input type="radio" class = "radioInput" id="type_cone" name="type" value="Cone">
             <label for="type_cone">Cone</label><br><br>
-            <button type="button" name="update_order" value="submit_icecream_type">Submit Selection</button>
+            <button type="button" name="update_order" value="submit_icecream_type"  onclick = "checkStatus('radio')">Submit Selection</button>
 
             <h2>Chocolate Bliss</h2>
             <h3>Select Toppings:</h3>
 
-            <input type="checkbox" id="topping1" name="topping1" value="Sprinkles">
+            <input type="checkbox" class = "checkboxInput" id="topping1" name="topping1" value="Sprinkles">
             <label for="topping1">Sprinkles</label><br><br>
-            <input type="checkbox" id="topping2" name="topping2" value="Chocolate Chips">
+            <input type="checkbox" class = "checkboxInput" id="topping2" name="topping2" value="Chocolate Chips">
             <label for="topping2">Chocolate Chips</label><br><br>
-            <input type="checkbox" id="topping3" name="topping3" value="Whipped Cream">
+            <input type="checkbox" class = "checkboxInput" id="topping3" name="topping3" value="Whipped Cream">
             <label for="topping3">Whipped Cream</label><br><br>
-            <button type="button" name="update_order" value="submit_toppings">Submit Selection</button>
+            <button type="button" id = "selectToppings" name="update_order" value="submit_toppings"  onclick = "checkStatus('checkbox')">Submit Selection</button>
 
             <br>
-            <button type="submit">Finish Order</button>
+            <h3>Total Price: <span id = totalPrice>$6.00</span></h3>
+            <button type = "submit" onclick = "return checkStatus('all')">Finish Order</button>
         </form>
     </main>
 
     <footer>
         <p>&copy; 2026 Sweet Scoop Ice Cream.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let totalSeconds = 600;
+            const countdownDisplay = document.getElementById("countdown");
+
+            const countdown = setInterval(() => {
+                let mins = Math.floor(totalSeconds / 60);
+                let secs = totalSeconds % 60;
+
+                countdownDisplay.innerHTML = `${mins}:${secs.toString().padStart(2, '0')}`
+
+                if (totalSeconds <= 0){
+                    clearInterval(countdown);
+                    window.location.href = 'order_summary.html'
+                } else{
+                    totalSeconds--;
+                }
+            }, 1000);
+        });
+
+        function checkStatus(type){
+            const radioInput = document.getElementsByClassName("radioInput");
+            const checkInput = document.getElementsByClassName("checkboxInput");
+            let radioChecked = false;
+            let checkChecked = false;
+
+           for (let i = 0; i < radioInput.length; i++){
+            if(radioInput[i].checked){
+                radioChecked = true;
+            }
+           }
+
+           for (let i = 0; i < checkInput.length; i++){
+            if(checkInput[i].checked){
+                checkChecked = true;
+            }
+           }
+
+            if (type == 'radio' && !radioChecked){
+                alert("Please select cup or cone");
+            }
+            else if(type == 'checkbox' && !checkChecked){
+                alert("Please select one topping");
+            }
+            else if(type == 'all'){
+                if (!radioChecked && !checkChecked){
+                    alert("Please select cup or cone and select at least one topping");
+                    return false;
+                }
+                else if(!radioChecked){
+                    alert("Please select cup or cone");
+                    return false;
+                } 
+                else if(!checkChecked){
+                    alert("Please select one topping");
+                    return false;
+                }
+            }
+        }
+
+        function updateTotal(){
+            let totalPrice = 6.00;
+            const totalPriceElement = document.getElementById('totalPrice');
+            const addTopping = document.querySelectorAll('.checkboxInput:checked');
+
+            addTopping.forEach(checkbox => {
+                totalPrice += 1.50
+            });
+
+            totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`
+        }
+
+        document.getElementById('selectToppings').addEventListener('click', updateTotal);
+    </script>
 </body>
 
 </html>
