@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <header id="page_header">
+        <div>
+            <div><img src="img/logo.jpeg" alt="Sweet Scoop Ice Cream Logo"></div>
+        </div>
+
+        <div>
+            <h3>Sweet Scoop Ice Cream</h3>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+
+    <main class="sign_up_main">
+        <div id="sign_up_container">
+            <h2>Signup</h2>
+            <form id="sign_up_form" action="menu_view.html">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="text" id="email" name="email" required><br><br>
+
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                
+                <label for="confirm_password">Confirm Password:</label><br>
+                <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+
+                <button type="submit" id = "sign_up_button">Sign Up</button>
+                <p id = "errorMessage"></p>
+                <p id = "successMessage"></p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Sweet Scoop Ice Cream.</p>
+    </footer>
+
+    <script>
+        document.getElementById("sign_up_form").addEventListener("submit", function(error){
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            let email = document.getElementById("email").value;
+            let errorMessage = ""
+
+            let usernameNeeded = /^[A-Za-z][A-Za-z0-9_-]{2,19}$/;
+            if (!usernameNeeded.test(username)){
+                errorMessage += "Invalid username (Must start with a letter, 3-20 characters, and cannot contain any special characters other than (-) and (_))<br>";
+            }
+
+            let passwordNeeded = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};:'",.<>/?`~])[^\s]{8,}$/;
+            if (!passwordNeeded.test(password)){
+                errorMessage += "Invalid password (Must be 8 characters long and must contain one uppercase letter, one lowercase letter, one number, and one special character with no spaces)<br>";
+            }
+
+            if (password != confirmPassword){
+                errorMessage += "Passwords do not match<br>";
+            }
+
+            let emailNeeded = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailNeeded.test(email)){
+                errorMessage += "Must be in a valid format (ex. username@example.com)<br>";
+            }
+
+            if(errorMessage != ""){
+                error.preventDefault();
+                let errorDisplay = document.getElementById("errorMessage");
+                let successDisplay = document.getElementById("successMessage")
+                errorDisplay.innerHTML = errorMessage;
+                successDisplay.style.display = "none";
+                errorDisplay.style.display = "block";
+            } else{
+                error.preventDefault();
+                document.getElementById("errorMessage");
+
+                let errorDisplay = document.getElementById("errorMessage");
+                let successDisplay = document.getElementById("successMessage");
+                successDisplay.innerHTML = "Signup successful! Redirecting to login...";
+                errorDisplay.style.display = "none";
+                successDisplay.style.display = "block";
+
+                setTimeout(function(){
+                    window.location.href = "login.html";
+                }, 2000);
+            }   
+        });
+    </script>
+</body>
+
+</html>
