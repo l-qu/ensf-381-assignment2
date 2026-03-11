@@ -327,3 +327,10 @@ form button,
     padding: 12px 20px;
     margin-bottom: 12px;
 }
+
+#login_message {
+    max-width: 400px;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+}
