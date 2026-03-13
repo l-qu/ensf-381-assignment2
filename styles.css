@@ -335,6 +335,20 @@ form button,
     display: none;
 }
 
+#login_message.error {
+    color: rgb(154, 9, 9);
+    background-color: rgb(255, 186, 186);
+    padding: 10px;
+    text-align: center;
+}
+
+#login_message.success {
+    color: rgb(6, 72, 34);
+    background-color: rgb(164, 211, 184);
+    padding: 10px;
+    text-align: center;
+}
+
 .sign_up_main {
     display: flex;
     justify-content: center;

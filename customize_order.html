@@ -55,7 +55,7 @@
             <button type="button" id = "selectToppings" name="update_order" value="submit_toppings"  onclick = "checkStatus('checkbox')">Submit Selection</button>
 
             <br>
-            <h3>Total Price: <span id = totalPrice>$6.00</span></h3>
+            <h3>Total Price: <span id = "totalPrice">$6.00</span></h3>
             <button type = "submit" onclick = "return checkStatus('all')">Finish Order</button>
         </form>
     </main>
@@ -135,8 +135,9 @@
 
             totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`
         }
-
-        document.getElementById('selectToppings').addEventListener('click', updateTotal);
+        document.querySelectorAll(".checkboxInput").forEach(box=> {
+            box.addEventListener('change', updateTotal);
+        });
     </script>
 </body>
 

@@ -67,24 +67,26 @@
                     u => u.username.toLowerCase() === usernameInput.toLowerCase()
                 );
                 if (!matchedUser) {
-                    showMessage('Username not found.');
+                    showMessage('Username not found.', 'error');
                     return;
                 }
                 if (matchedUser.email !== passwordInput) {
-                    showMessage('Incorrect password.');
+                    showMessage('Incorrect password.', 'error');
                     return;
                 }
-                showMessage('Login successful! Redirecting...');
+                showMessage('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
                     window.location.href = 'menu_view.html';
                 }, 2000);
             } catch (err) {
-                showMessage('Something went wrong.');
+                showMessage('Something went wrong.', 'error');
                 console.error(err);
             }
         });
-        function showMessage(message) {
+        function showMessage(message, type) {
             loginMessage.textContent = message;
+            loginMessage.className = "";
+            loginMessage.classList.add("message", type);
             loginMessage.style.display = 'block';
         }
     </script>
